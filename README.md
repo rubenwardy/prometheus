@@ -3,6 +3,16 @@
 Written by [rubenwardy](https://rubenwardy.com).  
 License: MIT
 
+## API
+
+* `prometheus.push(metric, value)`
+    * Calls to `push` will be queued and only uploaded every `prometheus.upload_interval`.
+    * `metric` is the metric name, see the [metric naming guide](https://prometheus.io/docs/instrumenting/writing_exporters/#naming) for names to choose.
+    * `value` is the actual value to push, for example number of players.
+* `prometheus.upload()`
+    * Uploads any queued metrics.
+    * Automatically called every `prometheus.upload_interval` seconds.
+
 ## Settings
 
 * `prometheus.pushgateway_url` - url including domain and port, default: `http://localhost:9091`.

@@ -2,12 +2,15 @@ local http = minetest.request_http_api()
 assert(http, "Please add 'prometheus' to secure.http_mods")
 
 prometheus = {}
+
+-- upload "queue"
 prometheus.buffer = ""
 
 
 --
--- Posts a metric to prometheus
--- Metrics may be buffered up to 1 second before sending
+-- Adds a metric datapoint to the upload buffer
+--
+-- Buffered metrics will then be pushed every prometheus.upload_interval seconds
 --
 function prometheus.post(metric, value)
 	print("Queuing metric=" .. metric .. ", value=" .. value)
@@ -17,7 +20,7 @@ end
 
 
 --
--- Uploads any queued metrics
+-- Uploads any buffered metrics
 --
 function prometheus.upload()
 	if prometheus.buffer:trim() == "" then
