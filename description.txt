@@ -1,0 +1,3 @@
+Adds the ability to upload metrics to prometheus' pushgateway, and provides
+a "minetest_players" metric by default.
+This mod also adds an API to allow other mods to push metrics efficiently.
