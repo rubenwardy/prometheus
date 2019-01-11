@@ -77,5 +77,7 @@ function upload_step()
 	minetest.after(upload_interval, upload_step)
 end
 minetest.after(upload_interval, upload_step)
-prometheus.post(minetest.settings:get("prometheus.start_gametime_metric") or "minetest_start_gametime",
-	minetest.get_gametime())
+minetest.after(0, function()
+	prometheus.post(minetest.settings:get("prometheus.start_gametime_metric") or "minetest_start_gametime",
+		minetest.get_gametime())
+end)
