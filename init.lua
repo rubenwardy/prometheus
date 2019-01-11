@@ -50,10 +50,15 @@ end
 
 local default_stats_interval = tonumber(minetest.settings:get("prometheus.default_stats_interval") or "15")
 local upload_interval = tonumber(minetest.settings:get("prometheus.upload_interval") or "1")
+local uptime = 0
 
 function default_stats()
+	uptime = uptime + default_stats_interval
+
 	prometheus.post(minetest.settings:get("prometheus.players_metric") or "minetest_players",
 			#minetest.get_connected_players())
+
+	prometheus.post(minetest.settings:get("prometheus.uptime_metric") or "minetest_uptime", uptime)
 
 	minetest.after(default_stats_interval, default_stats)
 end
