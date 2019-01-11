@@ -50,15 +50,23 @@ end
 
 local default_stats_interval = tonumber(minetest.settings:get("prometheus.default_stats_interval") or "15")
 local upload_interval = tonumber(minetest.settings:get("prometheus.upload_interval") or "1")
-local uptime = 0
-
 function default_stats()
-	uptime = uptime + default_stats_interval
-
 	prometheus.post(minetest.settings:get("prometheus.players_metric") or "minetest_players",
 			#minetest.get_connected_players())
 
-	prometheus.post(minetest.settings:get("prometheus.uptime_metric") or "minetest_uptime", uptime)
+	local stats
+	if minetest.get_stats then
+		stats = minetest.get_stats()
+	else
+		stats = {
+			uptime = minetest.get_server_uptime()
+		}
+	end
+
+	prometheus.post(minetest.settings:get("prometheus.uptime_metric") or "minetest_uptime", stats.uptime)
+	if stats.max_lag then
+		prometheus.post(minetest.settings:get("prometheus.max_lag_metric") or "minetest_max_lag", stats.max_lag)
+	end
 
 	minetest.after(default_stats_interval, default_stats)
 end
@@ -69,3 +77,5 @@ function upload_step()
 	minetest.after(upload_interval, upload_step)
 end
 minetest.after(upload_interval, upload_step)
+prometheus.post(minetest.settings:get("prometheus.start_gametime_metric") or "minetest_start_gametime",
+	minetest.get_gametime())

@@ -23,3 +23,5 @@ License: MIT
      Should be less or equal to `prometheus.default_stats_interval`.
 * `prometheus.players_metric` - name of player metric, default: `minetest_players`.
 * `prometheus.uptime_metric` - name of uptime metric, default: `minetest_uptime`.
+* `prometheus.max_lag_metric` - name of uptime metric, default: `minetest_max_lag`.
+* `prometheus.start_gametime_metric` - name of uptime metric, default: `minetest_start_gametime`.
